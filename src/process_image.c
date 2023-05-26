@@ -6,19 +6,30 @@
 
 float get_pixel(image im, int x, int y, int c)
 {
-    // TODO Fill this in
-    return 0;
+    if(((x<0 || x>=im.w) ||(y<0 || y>=im.h)) || (c<0 || c>=im.c))
+    {
+        return ;
+    }
+    float *val=im.data + (c*im.w*im.h) + (y*im.w) + x;
+    return *val;
 }
 
 void set_pixel(image im, int x, int y, int c, float v)
 {
-    // TODO Fill this in
+    if(((x<0 || x>=im.w) || (y<0 || y>=im.h)) || (c<0 || c>=im.c))
+    {
+        return;
+    }
+    im.data[(c*im.w*im.h) + (y*im.w) + x] = v;   
 }
 
 image copy_image(image im)
 {
     image copy = make_image(im.w, im.h, im.c);
-    // TODO Fill this in
+    for(int i=0; i<(im.w*im.h*im.c); i++)
+    {
+        copy.data[i] = im.data[i];
+    }
     return copy;
 }
 
@@ -26,18 +37,37 @@ image rgb_to_grayscale(image im)
 {
     assert(im.c == 3);
     image gray = make_image(im.w, im.h, 1);
-    // TODO Fill this in
+    for(int y=0; y<im.h ; y++)
+    {
+        for(int x=0; x<im.w; x++)
+        {
+            float r = get_pixel(im, x, y, 0);
+            float g = get_pixel(im, x, y, 1);
+            float b = get_pixel(im, x, y, 2);
+            float temp = 0.299*r + 0.587*g + 0.114*b;
+            set_pixel(gray, x, y, 0, temp);
+        }
+    }
     return gray;
 }
 
 void shift_image(image im, int c, float v)
 {
-    // TODO Fill this in
+    assert(c>=0 && c<im.c);
+    for(int y=0; y<im.h; y++)
+    {
+        for(int x=0; x<im.w; x++)
+        {
+            float val = get_pixel(im, x, y, c);
+            val=val+v;
+            set_pixel(im, x, y, c, val);
+        }
+    }
 }
 
 void clamp_image(image im)
 {
-    // TODO Fill this in
+    
 }
 
 
