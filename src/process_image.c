@@ -160,5 +160,48 @@ void hsv_to_rgb(image im)
             float h = get_pixel(im, x, y, 0);
             float s = get_pixel(im, x, y, 1);
             float v = get_pixel(im, x, y, 2);
-            
+            float C = s * v;
+            float m = v - C;
+            float h1 = h * 6.0;
+            float X = C * (1 - abs((h/60)%2)-1));
+            float r,g,b;
+            if(h1>=0 && h1<1)
+            {
+                r=C;
+                g=X;
+                b=0;
+            }
+            else if(h1>=1 && h1<2)
+            {
+                r=X;
+                g=C;
+                b=0;
+            }
+            else if(h1>=2 && h1<3)
+            {
+                r=0;
+                g=C;
+                b=X;
+            }
+            else if(h1>=3 && h1<4)
+            {
+                r=0;
+                g=X;
+                b=C;
+            }
+            else if(h1>=4 && h1<5)
+            {
+                r=X;
+                g=0;
+                b=C;
+            }
+            else
+            {
+                r=C;
+                g=0;
+                b=X;
+            }
+            set_pixel(im, x, y, 0, r+m);
+            set_pixel(im, x, y, 1, g+m);
+            set_pixel(im, x, y, 2, r+g);
 }
